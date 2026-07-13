@@ -1,32 +1,34 @@
 # Digital Communications Link Simulator in MATLAB
 
-This project simulates a basic digital communication system using MATLAB.
+This project simulates a digital communication link in MATLAB, comparing BPSK, QPSK, and 16-QAM modulation over an AWGN channel using constellation diagrams, Monte Carlo BER simulation, and theoretical BER curves.
 
 ## Current Features
 
 - BPSK modulation and demodulation
 - QPSK modulation and demodulation
+- 16-QAM modulation and demodulation
 - AWGN channel model
 - Bit Error Rate (BER) calculation
 - BER vs Eb/N0 simulation
-- Noisy BPSK and QPSK constellation visualization
-- Theoretical BER comparison for BPSK and QPSK
+- Noisy constellation visualization for BPSK, QPSK, and 16-QAM
+- Theoretical BER comparison
+- BPSK vs QPSK vs 16-QAM AWGN performance comparison
   
 ## Current Results
 
-The simulation shows that the Bit Error Rate decreases as Eb/N0 increases.
+The simulations show that BER decreases as Eb/N0 increases. BPSK and QPSK show very similar BER performance over AWGN, while 16-QAM requires higher Eb/N0 to achieve the same BER because its constellation points are closer together.
 
-Example result from the BPSK over AWGN simulation:
+Example BER results:
 
-| Eb/N0 (dB) | BER |
-|---|---|
-| 0 | 0.079300 |
-| 2 | 0.036730 |
-| 4 | 0.012360 |
-| 6 | 0.002510 |
-| 8 | 0.000190 |
-| 10 | 0.000000 |
-| 12 | 0.000000 |
+| Eb/N0 (dB) | BPSK BER | QPSK BER | 16-QAM BER |
+|---|---:|---:|---:|
+| 0 | 0.078980 | 0.079130 | 0.141570 |
+| 2 | 0.036990 | 0.037710 | 0.097260 |
+| 4 | 0.012020 | 0.012680 | 0.057670 |
+| 6 | 0.002210 | 0.002410 | 0.027860 |
+| 8 | 0.000260 | 0.000170 | 0.009310 |
+| 10 | 0.000000 | 0.000000 | 0.001790 |
+| 12 | 0.000000 | 0.000000 | 0.000140 |
 
 ## BER Curves and Constellations
 
@@ -45,6 +47,18 @@ Example result from the BPSK over AWGN simulation:
 ### QPSK Simulated vs Theoretical BER
 
 ![QPSK BER Curve](figures/qpsk_awgn_ber_curve.png)
+
+### 16-QAM Constellation
+
+![16-QAM Constellation](figures/16qam_awgn_constellation.png)
+
+### 16-QAM Simulated vs Theoretical BER
+
+![16-QAM BER Curve](figures/16qam_awgn_ber_curve.png)
+
+### BPSK vs QPSK vs 16-QAM AWGN Comparison
+
+![AWGN All Modulations Comparison](figures/awgn_all_modulations_comparison.png)
 
 ## How to Run
 
@@ -89,3 +103,35 @@ a05_qpsk_awgn_ber_curve
 ```
 
 to generate the simulated QPSK BER curve and compare it with the theoretical QPSK BER curve.
+
+Run:
+
+```matlab
+a06_bpsk_qpsk_awgn_comparison
+```
+
+to compare BPSK and QPSK BER performance over an AWGN channel.
+
+Run:
+
+```matlab
+a07_16qam_awgn_single_snr
+```
+
+to simulate 16-QAM over AWGN at one Eb/N0 value and view the noisy 16-QAM constellation.
+
+Run:
+
+```matlab
+a08_16qam_awgn_ber_curve
+```
+
+to generate the simulated 16-QAM BER curve and compare it with the theoretical 16-QAM BER curve.
+
+Run:
+
+```matlab
+a09_awgn_all_modulations_comparison
+```
+
+to compare BPSK, QPSK, and 16-QAM BER performance on the same AWGN plot.
