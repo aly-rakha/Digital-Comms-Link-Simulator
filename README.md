@@ -1,6 +1,6 @@
 # Digital Communications Link Simulator in MATLAB
 
-This project simulates a digital communication link in MATLAB, comparing BPSK, QPSK, and 16-QAM modulation over an AWGN channel using constellation diagrams, Monte Carlo BER simulation, and theoretical BER curves.
+This project simulates a digital communication link in MATLAB, comparing BPSK, QPSK, and 16-QAM modulation over AWGN and Rayleigh fading channels. It includes constellation visualization, Monte Carlo BER simulation, theoretical BER comparison, and modulation/channel performance analysis.
 
 ## Current Features
 
@@ -8,11 +8,13 @@ This project simulates a digital communication link in MATLAB, comparing BPSK, Q
 - QPSK modulation and demodulation
 - 16-QAM modulation and demodulation
 - AWGN channel model
+- Rayleigh fading channel model
 - Bit Error Rate (BER) calculation
 - BER vs Eb/N0 simulation
 - Noisy constellation visualization for BPSK, QPSK, and 16-QAM
 - Theoretical BER comparison
 - BPSK vs QPSK vs 16-QAM AWGN performance comparison
+- AWGN vs Rayleigh fading performance comparison
   
 ## Current Results
 
@@ -29,6 +31,12 @@ Example BER results:
 | 8 | 0.000260 | 0.000170 | 0.009310 |
 | 10 | 0.000000 | 0.000000 | 0.001790 |
 | 12 | 0.000000 | 0.000000 | 0.000140 |
+
+## Rayleigh Fading Results
+
+The project also compares AWGN and Rayleigh fading channels. Rayleigh fading produces a much higher BER because the channel randomly changes the signal amplitude and phase, creating deep fades where the received signal becomes weak.
+
+The final comparison includes BPSK, QPSK, and 16-QAM over both AWGN and Rayleigh fading channels.
 
 ## BER Curves and Constellations
 
@@ -59,6 +67,22 @@ Example BER results:
 ### BPSK vs QPSK vs 16-QAM AWGN Comparison
 
 ![AWGN All Modulations Comparison](figures/awgn_all_modulations_comparison.png)
+
+### BPSK over AWGN vs Rayleigh Fading
+
+![BPSK AWGN vs Rayleigh](figures/bpsk_awgn_vs_rayleigh.png)
+
+### QPSK over AWGN vs Rayleigh Fading
+
+![QPSK AWGN vs Rayleigh](figures/qpsk_awgn_vs_rayleigh.png)
+
+### 16-QAM over AWGN vs Rayleigh Fading
+
+![16-QAM AWGN vs Rayleigh](figures/16qam_awgn_vs_rayleigh.png)
+
+### AWGN vs Rayleigh Fading: All Modulations
+
+![AWGN vs Rayleigh All Modulations](figures/awgn_vs_rayleigh_all_modulations.png)
 
 ## How to Run
 
@@ -135,3 +159,35 @@ a09_awgn_all_modulations_comparison
 ```
 
 to compare BPSK, QPSK, and 16-QAM BER performance on the same AWGN plot.
+
+Run:
+
+```matlab
+a10_bpsk_rayleigh_ber_curve
+```
+
+to compare BPSK over AWGN and Rayleigh fading.
+
+Run:
+
+```matlab
+a11_qpsk_rayleigh_ber_curve
+```
+
+to compare QPSK over AWGN and Rayleigh fading.
+
+Run:
+
+```matlab
+a12_16qam_rayleigh_ber_curve
+```
+
+to compare 16-QAM over AWGN and Rayleigh fading.
+
+Run:
+
+```matlab
+a13_awgn_vs_rayleigh_all_modulations
+```
+
+to compare BPSK, QPSK, and 16-QAM over both AWGN and Rayleigh fading channels.
