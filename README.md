@@ -1,193 +1,253 @@
 # Digital Communications Link Simulator in MATLAB
 
-This project simulates a digital communication link in MATLAB, comparing BPSK, QPSK, and 16-QAM modulation over AWGN and Rayleigh fading channels. It includes constellation visualization, Monte Carlo BER simulation, theoretical BER comparison, and modulation/channel performance analysis.
+A modular MATLAB digital communications simulator for transmitting binary and text data using **BPSK, QPSK, and 16-QAM** over **AWGN and Rayleigh fading channels**.
 
-## Current Features
+The project includes BER analysis, constellation visualization, theoretical performance comparisons, custom text transmission, Rayleigh channel equalization, and a reusable communication-link engine.
 
-- BPSK modulation and demodulation
-- QPSK modulation and demodulation
-- 16-QAM modulation and demodulation
-- AWGN channel model
-- Rayleigh fading channel model
+## Overview
+
+The simulator models a complete digital communication chain:
+
+```text
+Input Message
+     ↓
+Text-to-Bits Conversion
+     ↓
+Digital Modulation
+BPSK / QPSK / 16-QAM
+     ↓
+Channel
+AWGN / Rayleigh Fading
+     ↓
+Channel Equalization
+(Rayleigh)
+     ↓
+Demodulation
+     ↓
+Bit Error Rate Calculation
+     ↓
+Recovered Message
+```
+
+The project began as individual communication-system experiments and was progressively refactored into a modular simulator with reusable MATLAB functions.
+
+## Features
+
+- BPSK, QPSK, and 16-QAM modulation and demodulation
+- AWGN channel simulation
+- Rayleigh fading channel simulation
+- Perfect-channel-knowledge equalization for Rayleigh fading
 - Bit Error Rate (BER) calculation
-- BER vs Eb/N0 simulation
-- Noisy constellation visualization for BPSK, QPSK, and 16-QAM
-- Theoretical BER comparison
-- BPSK vs QPSK vs 16-QAM AWGN performance comparison
-- AWGN vs Rayleigh fading performance comparison
-  
-## Current Results
+- BER vs Eb/N0 Monte Carlo simulations
+- Theoretical and simulated BER comparison
+- Constellation visualization
+- Custom text-to-binary transmission
+- Recovered-message reconstruction
+- Selectable modulation and channel models
+- Modular reusable communication functions
+- Main simulator interface using a reusable communication-link engine
 
-The simulations show that BER decreases as Eb/N0 increases. BPSK and QPSK show very similar BER performance over AWGN, while 16-QAM requires higher Eb/N0 to achieve the same BER because its constellation points are closer together.
+## Supported Configurations
 
-Example BER results:
+| Modulation | Bits per Symbol | AWGN | Rayleigh |
+|---|---:|:---:|:---:|
+| BPSK | 1 | ✓ | ✓ |
+| QPSK | 2 | ✓ | ✓ |
+| 16-QAM | 4 | ✓ | ✓ |
 
-| Eb/N0 (dB) | BPSK BER | QPSK BER | 16-QAM BER |
-|---|---:|---:|---:|
-| 0 | 0.078980 | 0.079130 | 0.141570 |
-| 2 | 0.036990 | 0.037710 | 0.097260 |
-| 4 | 0.012020 | 0.012680 | 0.057670 |
-| 6 | 0.002210 | 0.002410 | 0.027860 |
-| 8 | 0.000260 | 0.000170 | 0.009310 |
-| 10 | 0.000000 | 0.000000 | 0.001790 |
-| 12 | 0.000000 | 0.000000 | 0.000140 |
+Higher-order modulation increases the number of bits transmitted per symbol, but generally requires a better channel quality to maintain the same BER.
 
-## Rayleigh Fading Results
+## Quick Start
 
-The project also compares AWGN and Rayleigh fading channels. Rayleigh fading produces a much higher BER because the channel randomly changes the signal amplitude and phase, creating deep fades where the received signal becomes weak.
-
-The final comparison includes BPSK, QPSK, and 16-QAM over both AWGN and Rayleigh fading channels.
-
-## BER Curves and Constellations
-
-### BPSK Simulated BER Curve
-
-![BPSK BER Curve](figures/bpsk_awgn_ber_curve.png)
-
-### BPSK Simulated vs Theoretical BER
-
-![BPSK Theory Comparison](figures/bpsk_awgn_theory_comparison.png)
-
-### QPSK Constellation
-
-![QPSK Constellation](figures/qpsk_awgn_constellation.png)
-
-### QPSK Simulated vs Theoretical BER
-
-![QPSK BER Curve](figures/qpsk_awgn_ber_curve.png)
-
-### 16-QAM Constellation
-
-![16-QAM Constellation](figures/16qam_awgn_constellation.png)
-
-### 16-QAM Simulated vs Theoretical BER
-
-![16-QAM BER Curve](figures/16qam_awgn_ber_curve.png)
-
-### BPSK vs QPSK vs 16-QAM AWGN Comparison
-
-![AWGN All Modulations Comparison](figures/awgn_all_modulations_comparison.png)
-
-### BPSK over AWGN vs Rayleigh Fading
-
-![BPSK AWGN vs Rayleigh](figures/bpsk_awgn_vs_rayleigh.png)
-
-### QPSK over AWGN vs Rayleigh Fading
-
-![QPSK AWGN vs Rayleigh](figures/qpsk_awgn_vs_rayleigh.png)
-
-### 16-QAM over AWGN vs Rayleigh Fading
-
-![16-QAM AWGN vs Rayleigh](figures/16qam_awgn_vs_rayleigh.png)
-
-### AWGN vs Rayleigh Fading: All Modulations
-
-![AWGN vs Rayleigh All Modulations](figures/awgn_vs_rayleigh_all_modulations.png)
-
-## How to Run
-
-Open MATLAB and set the current folder to this project folder.
+Open MATLAB and set the current folder to the project directory.
 
 Run:
 
 ```matlab
-a01_bpsk_awgn_single_snr
+main_simulator
 ```
 
-to simulate BPSK over AWGN at one Eb/N0 value and view the noisy BPSK constellation.
-
-Run:
+The main user settings are located near the top of `main_simulator.m`:
 
 ```matlab
-a02_bpsk_awgn_ber_curve
+message = "Hello from my digital communication simulator!";
+
+config.modulation = "QPSK";
+config.channel = "Rayleigh";
+config.EbN0_dB = 10;
 ```
 
-to generate the simulated BPSK BER vs Eb/N0 curve.
-
-Run:
+Available modulation settings:
 
 ```matlab
-a03_bpsk_awgn_theory_comparison
+"BPSK"
+"QPSK"
+"16QAM"
 ```
 
-to compare the simulated BPSK BER curve with the theoretical BPSK BER curve.
-
-Run:
+Available channel settings:
 
 ```matlab
-a04_qpsk_awgn_single_snr
+"AWGN"
+"Rayleigh"
 ```
 
-to simulate QPSK over AWGN at one Eb/N0 value and view the noisy QPSK constellation.
+You can replace the message with your own text and change the communication configuration before running the simulator.
 
-Run:
+## Example Output
+
+A simulation reports the original and recovered message together with communication-system statistics such as:
+
+```text
+Modulation: QPSK
+Channel: Rayleigh
+Eb/N0: 10 dB
+Bits per symbol: 2
+Number of transmitted bits: 368
+Number of transmitted symbols: 184
+Number of bit errors: 10
+BER: 0.027174
+```
+
+Because channel noise and Rayleigh fading are randomly generated, the exact BER and recovered message vary between runs.
+
+## Project Architecture
+
+```text
+Digital-Comms-Link-Simulator/
+│
+├── main_simulator.m
+│
+├── src/
+│   ├── textToBits.m
+│   ├── bitsToText.m
+│   ├── modulateSignal.m
+│   ├── demodulateSignal.m
+│   ├── applyChannel.m
+│   ├── calculateBER.m
+│   └── runCommunicationLink.m
+│
+├── figures/
+│
+├── a01_...m
+├── ...
+└── a16_...m
+```
+
+### Core Engine
+
+`runCommunicationLink.m` runs the complete digital communication chain and returns a MATLAB structure containing the transmission results.
+
+Example:
 
 ```matlab
-a05_qpsk_awgn_ber_curve
+config.modulation = "QPSK";
+config.channel = "Rayleigh";
+config.EbN0_dB = 10;
+
+result = runCommunicationLink( ...
+    "Testing my communication engine!", ...
+    config ...
+);
 ```
 
-to generate the simulated QPSK BER curve and compare it with the theoretical QPSK BER curve.
-
-Run:
+The returned structure includes values such as:
 
 ```matlab
-a06_bpsk_qpsk_awgn_comparison
+result.originalMessage
+result.recoveredMessage
+result.BER
+result.numErrors
+result.transmittedBits
+result.receivedBits
+result.transmittedSymbols
+result.receivedSymbols
+result.equalizedSymbols
+result.channelCoefficients
 ```
 
-to compare BPSK and QPSK BER performance over an AWGN channel.
+This modular structure allows the communication engine to be reused later by a GUI, BER-analysis tool, file-transmission system, or hardware interface.
 
-Run:
+## Simulation Results
+
+### BPSK, QPSK, and 16-QAM over AWGN
+
+BPSK and QPSK achieve similar BER performance when normalized by Eb/N0, while 16-QAM requires higher Eb/N0 because its constellation points are closer together.
+
+![AWGN Modulation Comparison](figures/awgn_all_modulations_comparison.png)
+
+### AWGN vs Rayleigh Fading
+
+Rayleigh fading significantly degrades BER performance compared with AWGN because the received signal experiences random amplitude and phase changes. Deep fades can strongly reduce instantaneous signal quality.
+
+![AWGN vs Rayleigh Comparison](figures/awgn_vs_rayleigh_all_modulations.png)
+
+### Custom Text Transmission
+
+The simulator can transmit a real text message by converting characters into binary data, modulating the resulting bit stream, passing it through the selected channel, and reconstructing the received text.
+
+Example modular QPSK transmission over Rayleigh fading:
+
+![QPSK Rayleigh Text Transmission](figures/main_simulator_qpsk_rayleigh.png)
+
+## Development Progression
+
+The numbered MATLAB scripts document the development of the simulator.
+
+```text
+a01-a03  BPSK over AWGN and theoretical BER
+a04-a06  QPSK and BPSK/QPSK comparison
+a07-a09  16-QAM and full AWGN comparison
+a10-a13  Rayleigh fading and channel comparison
+a14      Custom text transmission using BPSK
+a15      Selectable BPSK/QPSK/16-QAM text transmission
+a16      Selectable AWGN/Rayleigh text transmission
+```
+
+The current recommended entry point is:
 
 ```matlab
-a07_16qam_awgn_single_snr
+main_simulator
 ```
 
-to simulate 16-QAM over AWGN at one Eb/N0 value and view the noisy 16-QAM constellation.
+The numbered scripts are retained to show the experimental and development progression of the project.
 
-Run:
+## Key Communications Concepts Demonstrated
 
-```matlab
-a08_16qam_awgn_ber_curve
+**Modulation efficiency:** BPSK carries 1 bit per symbol, QPSK carries 2 bits per symbol, and 16-QAM carries 4 bits per symbol.
+
+**Noise performance:** Increasing Eb/N0 reduces the probability of incorrect symbol decisions and therefore lowers BER.
+
+**Modulation tradeoff:** Higher-order modulation transmits more information per symbol but places constellation points closer together, increasing sensitivity to channel impairments.
+
+**Rayleigh fading:** Unlike AWGN alone, Rayleigh fading randomly changes signal amplitude and phase. Deep fades can create large errors even when average Eb/N0 is relatively high.
+
+**Equalization:** For Rayleigh simulations, the receiver assumes perfect knowledge of the channel coefficient and compensates for fading before demodulation.
+
+## Future Development
+
+Planned extensions include a hardware-in-the-loop baseband communication system using ESP32 boards and a breadboard analog channel.
+
+Potential hardware experiments include:
+
+```text
+ESP32 Transmitter
+        ↓
+Breadboard RC Channel
+        ↓
+ESP32 ADC Receiver
+        ↓
+MATLAB Analysis
 ```
 
-to generate the simulated 16-QAM BER curve and compare it with the theoretical 16-QAM BER curve.
+Future measurements may include BER vs symbol rate, BER vs RC time constant, receiver threshold analysis, real waveform capture, and eye-diagram visualization.
 
-Run:
+Further software extensions may include a graphical user interface, file transmission, channel coding and interleaving, OFDM, additional channel models, and eventual SDR-based experiments.
 
-```matlab
-a09_awgn_all_modulations_comparison
-```
+## MATLAB
 
-to compare BPSK, QPSK, and 16-QAM BER performance on the same AWGN plot.
+Developed and tested using MATLAB.
 
-Run:
+---
 
-```matlab
-a10_bpsk_rayleigh_ber_curve
-```
-
-to compare BPSK over AWGN and Rayleigh fading.
-
-Run:
-
-```matlab
-a11_qpsk_rayleigh_ber_curve
-```
-
-to compare QPSK over AWGN and Rayleigh fading.
-
-Run:
-
-```matlab
-a12_16qam_rayleigh_ber_curve
-```
-
-to compare 16-QAM over AWGN and Rayleigh fading.
-
-Run:
-
-```matlab
-a13_awgn_vs_rayleigh_all_modulations
-```
-
-to compare BPSK, QPSK, and 16-QAM over both AWGN and Rayleigh fading channels.
+This project is under active development as a practical exploration of digital communications, signal processing, channel modeling, and hardware/software integration.
